@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const ApiManager = axios.create({
-    baseURL: 'http://192.168.18.93:4321',
+    baseURL: 'https://x8cgfzvm-4321.asse.devtunnels.ms',
     responseType: 'json',
     withCredentials: true
 })

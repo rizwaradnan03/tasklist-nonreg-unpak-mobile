@@ -10,7 +10,7 @@ const StackNavigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Login" options={{headerTitle: 'Sistem List Tugas'}} component={LoginScreen} />
                 <Stack.Screen name='Home' options={{headerShown: false}} component={BottomTabsNavigator} />
             </Stack.Navigator>
         </NavigationContainer>

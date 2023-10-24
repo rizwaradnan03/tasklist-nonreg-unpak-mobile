@@ -12,14 +12,28 @@ const LoginScreen = ({ navigation }) => {
         password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
     });
 
-    const handleCheckToken = async() => {
-        const token = AsyncStorage.getItem("AccessToken")
-        if(!token){
-            navigation.navigate("Login")
-        }else{
-            navigation.navigate("Home")
+    const handleCheckToken = async () => {
+        const currentTime = new Date().getTime();
+        const token = await AsyncStorage.getItem("AccessToken");
+
+        console.log(token);
+
+        if (!token) {
+            navigation.navigate("Login");
+        } else {
+            const tokenPayload = jwt.decode(token);
+            const tokenExpirationTime = tokenPayload.exp * 1000;
+
+            if (currentTime > tokenExpirationTime) {
+                console.log('Token kedaluwarsa');
+                navigation.navigate("Login");
+            } else {
+                console.log('Token valid');
+                navigation.navigate("Home");
+            }
         }
-    }
+    };
+
 
     const handleSubmit = async (values) => {
         try {
@@ -74,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
                                 secureTextEntry
                             />
                             {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-                            <Button onPress={handleSubmit} title="Submit" />
+                            <Button onPress={handleSubmit} style={styles.buttonSubmit} title="Submit" />
                         </View>
                     )}
                 </Formik>
@@ -119,6 +133,9 @@ const styles = StyleSheet.create({
         color: 'red',
         marginBottom: 10,
     },
+    buttonSubmit: {
+        backgroundColor: 'blue'
+    }
 });
 
 export default LoginScreen;
